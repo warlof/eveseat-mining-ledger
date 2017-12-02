@@ -1,0 +1,22 @@
+{
+  "name": "warlof/eveseat-mining-ledger",
+  "description": "An extension for Eve SeAT which is providing Mining Ledger over ESI for 2.x version",
+  "type": "seat-plugin",
+  "minimum-stability": "stable",
+  "license": "GPL-3.0",
+  "authors": [
+    {
+      "name": "Warlof Tutsimo",
+      "email": "loic.leuilliot@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Warlof\\Seat\\MiningLedger\\": "src/"
+    }
+  },
+  "require": {
+    "eveseat/seat": "2.*",
+    "eveseat/eseye": "0.*"
+  }
+}

@@ -3,7 +3,7 @@ An extension for Eve SeAT which is providing Mining Ledger over ESI for 2.x vers
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/warlof/eveseat-mining-ledger.svg?style=flat-square)](https://packagist.org/packages/warlof/eveseat-mining-ledger)
 [![Build Status](https://img.shields.io/travis/warlof/eveseat-mining-ledger.svg?style=flat-square)](https://travis-ci.org/warlof/eveseat-mining-ledger)
-[![Code Climate](https://img.shields.io/codeclimate/github/warlof/eveseat-mining-ledger.svg?style=flat-square)](https://codeclimate.com/github/warlof/eveseat-mining-ledger)
+[![Code Climate](https://img.shields.io/codeclimate/maintainability/warlof/eveseat-mining-ledger.svg?style=flat-square)](https://codeclimate.com/github/warlof/eveseat-mining-ledger)
 [![Coverage Status](https://img.shields.io/coveralls/warlof/eveseat-mining-ledger.svg?style=flat-square)](https://coveralls.io/github/warlof/eveseat-mining-ledger?branch=master)
 [![License](https://img.shields.io/badge/license-GPLv3-blue.svg?style=flat-square)](https://raw.githubusercontent.com/warlof/eveseat-mining-ledger/master/LICENSE)
 

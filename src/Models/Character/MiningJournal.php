@@ -8,6 +8,7 @@
 namespace Warlof\Seat\MiningLedger\Models\Character;
 
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Seat\Eveapi\Api\Character\CharacterSheet;
 use Warlof\Seat\MiningLedger\Models\Sde\InvType;
@@ -40,5 +41,27 @@ class MiningJournal extends Model {
 	public function system()
 	{
 		return $this->hasOne(MapDenormalize::class, 'itemID', 'solar_system_id');
+	}
+
+	/**
+	 * Fix composite key issue on insert/update elements.
+	 * Keep using core feature as much as possible, getKeyName is handle like an object and may or not returning array
+	 *
+	 * @param Builder $query
+	 *
+	 * @return Builder
+	 */
+	protected function setKeysForSaveQuery( Builder $query ) {
+
+		if (is_array($this->getKeyName())) {
+
+			foreach ((array) $this->getKeyName() as $keyField) {
+				$query->where($keyField, '=', $this->original[$keyField]);
+			}
+
+			return $query;
+		}
+
+		return parent::setKeysForSaveQuery( $query );
 	}
 }

@@ -29,7 +29,10 @@ class MiningLedgerProvider extends ServiceProvider {
 			__DIR__ . '/Config/mining-ledger.config.php', 'mining_ledger.config');
 
 		$this->mergeConfigFrom(
-			__DIR__ . '/Config/mining-ledger.permissions.php', 'web.permissions');
+			__DIR__ . '/Config/character.permissions.php', 'web.permissions.character');
+
+		$this->mergeConfigFrom(
+			__DIR__ . '/Config/corporation.permissions.php', 'web.permissions.corporation');
 
 		$this->mergeConfigFrom(
 			__DIR__ . '/Config/package.character.menu.php', 'package.character.menu');

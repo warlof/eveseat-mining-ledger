@@ -29,7 +29,7 @@ Route::group([
 
 		Route::get('/view/mining-ledger/{character_id}', [
 			'as' => 'character.view.mining_ledger',
-			'middleware' => 'characterbouncer:mining_ledger',
+			'middleware' => 'characterbouncer:warlof_mining',
 			'uses' => 'MiningLedgerController@getLedger',
 		]);
 
@@ -42,13 +42,13 @@ Route::group([
 
 		Route::get('/view/mining-tracking/{corporation_id}', [
 			'as' => 'corporation.view.mining_tracking',
-			'middleware' => 'corporationbouncer:mining_ledger',
+			'middleware' => 'corporationbouncer:warlof_mining',
 			'uses' => 'MiningLedgerController@getTracking',
 		]);
 
 		Route::get('/view/mining-ledger/{corporation_id}/{year?}/{month?}', [
 			'as' => 'coporation.view.mining_ledger',
-			'middleware' => 'corporationbouncer:mining_ledger',
+			'middleware' => 'corporationbouncer:warlof_mining',
 			'uses' => 'MiningLedgerController@getLedger',
 		]);
 

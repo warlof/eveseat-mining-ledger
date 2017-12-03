@@ -1,7 +1,7 @@
 # eveseat-mining-ledger
 An extension for Eve SeAT which is providing Mining Ledger over ESI for 2.x version
 
-[![Latest Stable Version](https://img.shields.io/packagist/v/warlof/eveseat-mining-ledger.svg?style=flat-square)]()
+[![Latest Stable Version](https://img.shields.io/packagist/v/warlof/eveseat-mining-ledger.svg?style=flat-square)](https://packagist.org/packages/warlof/eveseat-mining-ledger)
 [![Build Status](https://img.shields.io/travis/warlof/eveseat-mining-ledger.svg?style=flat-square)](https://travis-ci.org/warlof/eveseat-mining-ledger)
 [![Code Climate](https://img.shields.io/codeclimate/github/warlof/eveseat-mining-ledger.svg?style=flat-square)](https://codeclimate.com/github/warlof/eveseat-mining-ledger)
 [![Coverage Status](https://img.shields.io/coveralls/warlof/eveseat-mining-ledger.svg?style=flat-square)](https://coveralls.io/github/warlof/eveseat-mining-ledger?branch=master)
@@ -57,6 +57,14 @@ This package will add few commands into your SeAT installation. You'll their nam
 |---------------------|--------------|--------|
 | esi:market-prices:update | This command will update item average and adjuster prices | twice a day |
 | esi:mining-ledger:update | This command will update mining ledger from every character which have access granted to the package | every 10 minutes |
+
+## Permissions
+
+This package will add two new permission for respectively character and corporation :
+ - corporation.warlof_mining
+ - character.warlof_mining
+
+They will grant access to mining ledger on each entity type.
 
 # Usage
 

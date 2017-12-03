@@ -55,7 +55,7 @@ This package is providing ESI support for mining ledger only to SeAT 2.x which i
 
 ## Commands
 
-This package will add few commands into your SeAT installation. You'll their name and purpose into the table bellow.
+This package will add few commands into your SeAT installation. You'll find their name and purpose into the table bellow.
 
 | Command name | Description | Scheduled |
 |---------------------|--------------|--------|

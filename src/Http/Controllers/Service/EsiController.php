@@ -45,16 +45,16 @@ class EsiController extends Controller {
 			return redirect()->route('character.view.mining_ledger', ['character_id' => $entity_id])
 			                 ->with('error', 'No code transferred or code is empty.');
 
-		$this->exchangeCode($code);
+		$esiToken = $this->exchangeCode($code);
 
 		session(['weml-auth-type' => null]);
 		session(['weml-auth-id'   => null]);
 
-		return redirect()->route('character.view.mining_ledger', ['character_id' => $entity_id])
+		return redirect()->route('character.view.mining_ledger', ['character_id' => $esiToken->character_id])
 		                 ->with('success', 'Character has been successfully coupled.');
 	}
 
-	private function exchangeCode(string $code)
+	private function exchangeCode(string $code) : EsiTokens
 	{
 		$request_time = Carbon::now('UTC');
 
@@ -76,15 +76,25 @@ class EsiController extends Controller {
 			],
 		]);
 
-		$body = json_decode($response->getBody());
+		$token = json_decode($response->getBody());
 
-		EsiTokens::create([
-			'character_id'  => session('weml-auth-id'),
-			'scopes'        => 'esi-industry.read_character_mining.v1',
-			'access_token'  => $body->access_token,
-			'refresh_token' => $body->refresh_token,
-			'expires_at'    => $request_time->addSeconds($body->expires_in),
+		$response = $client->request('GET', '/oauth/verify', [
+			'headers' => [
+				'Authorization' => 'Bearer ' . $token->access_token,
+			],
 		]);
+
+		$verify = json_decode($response->getBody());
+
+		$esiToken = EsiTokens::create([
+			'character_id'  => $verify->CharacterID,
+			'scopes'        => 'esi-industry.read_character_mining.v1',
+			'access_token'  => $token->access_token,
+			'refresh_token' => $token->refresh_token,
+			'expires_at'    => $request_time->addSeconds($token->expires_in),
+		]);
+
+		return $esiToken;
 	}
 
 	private function buildAuthUri() : string
@@ -96,7 +106,7 @@ class EsiController extends Controller {
 		if (array_key_exists('port', $url) && $url['port'] != 80)
 			$base_uri .= ':' . $url['port'];
 
-		$path  = '/oauth/authorize';
+		$path   = '/oauth/authorize';
 		$scopes = ['esi-industry.read_character_mining.v1'];
 		$state  = base64_encode(time() . implode(' ', $scopes));
 		$query_parameters = [

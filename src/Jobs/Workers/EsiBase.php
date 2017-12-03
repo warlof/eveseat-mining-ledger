@@ -47,6 +47,12 @@ abstract class EsiBase extends Base {
 		$this->esi_instance = new Eseye();
 	}
 
+	/**
+	 * @param EsiTokens $token
+	 *
+	 * @return $this
+	 * @throws \Seat\Eseye\Exceptions\InvalidContainerDataException
+	 */
 	public function setAuthentication(EsiTokens $token)
 	{
 		$this->token = $token;

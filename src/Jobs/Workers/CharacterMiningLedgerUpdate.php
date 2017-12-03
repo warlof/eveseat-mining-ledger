@@ -8,6 +8,9 @@
 namespace Warlof\Seat\MiningLedger\Jobs\Workers;
 
 
+use Seat\Eseye\Exceptions\EsiScopeAccessDeniedException;
+use Seat\Eseye\Exceptions\InvalidContainerDataException;
+use Seat\Eseye\Exceptions\RequestFailedException;
 use Warlof\Seat\MiningLedger\Models\Character\MiningJournal;
 
 class CharacterMiningLedgerUpdate extends EsiBase {
@@ -17,6 +20,9 @@ class CharacterMiningLedgerUpdate extends EsiBase {
 	 * The contract for the update call. All
 	 * update should at least have this function.
 	 *
+	 * @throws InvalidContainerDataException
+	 * @throws EsiScopeAccessDeniedException
+	 * @throws RequestFailedException
 	 * @return mixed
 	 */
 	public function call() {

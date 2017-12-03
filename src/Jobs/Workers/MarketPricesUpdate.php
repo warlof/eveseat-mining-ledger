@@ -8,6 +8,8 @@
 namespace Warlof\Seat\MiningLedger\Jobs\Workers;
 
 
+use Seat\Eseye\Exceptions\EsiScopeAccessDeniedException;
+use Seat\Eseye\Exceptions\RequestFailedException;
 use Warlof\Seat\MiningLedger\Models\Eve\ItemMarketPrice;
 
 class MarketPricesUpdate extends EsiBase {
@@ -16,6 +18,8 @@ class MarketPricesUpdate extends EsiBase {
 	 * The contract for the update call. All
 	 * update should at least have this function.
 	 *
+	 * @throws EsiScopeAccessDeniedException
+	 * @throws RequestFailedException
 	 * @return mixed
 	 */
 	public function call() {

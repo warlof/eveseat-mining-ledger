@@ -19,6 +19,8 @@ class MiningJournal extends Model {
 
 	public $incrementing = false;
 
+	protected $primaryKey = ['character_id', 'date', 'solar_system_id', 'type_id'];
+
 	protected $table = 'warlof_mining_ledger_character_mining_journal';
 
 	protected $fillable = [

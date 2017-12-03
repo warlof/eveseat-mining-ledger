@@ -17,6 +17,6 @@
   },
   "require": {
     "eveseat/web": "^2.0",
-    "eveseat/eseye": "~0.10"
+    "eveseat/eseye": "0.*"
   }
 }

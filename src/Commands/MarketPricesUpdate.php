@@ -31,7 +31,7 @@ class MarketPricesUpdate extends Command {
 	{
 		$queued_tokens = 0;
 
-		$job->scope                     = 'Character';
+		$job->scope                     = 'Market';
 		$job->api                       = 'ESI Scheduler';
 		$job->owner_id                  = 0;
 		$job->esi_access                = null;

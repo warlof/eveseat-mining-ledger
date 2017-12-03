@@ -35,7 +35,7 @@ class MiningLedgerController extends Controller {
 			->select('character_id', 'name', DB::raw('year(date) as year'), DB::raw('month(date) as month'),
 				DB::raw('sum(quantity) as quantities'), DB::raw('sum(quantity * volume) as volumes'),
 				DB::raw('sum(quantity * average_price) as amounts'))
-			->join('eve_market_prices', 'eve_market_prices.type_id', 'warlof_mining_ledger_character_mining_journal.type_id')
+			->join('warlof_mining_ledger_eve_prices', 'warlof_mining_ledger_eve_prices.type_id', 'warlof_mining_ledger_character_mining_journal.type_id')
 			->join('invTypes', 'typeID', 'warlof_mining_ledger_character_mining_journal.type_id')
 			->join('corporation_member_trackings', 'characterID', 'character_id')
 			->where('corporationID', $corporation_id)

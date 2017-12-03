@@ -16,7 +16,7 @@
     }
   },
   "require": {
-    "eveseat/seat": "2.*",
-    "eveseat/eseye": "0.*"
+    "eveseat/seat": "^2.0",
+    "eveseat/eseye": "^0.*"
   }
 }

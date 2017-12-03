@@ -35,6 +35,8 @@ An extension for Eve SeAT which is providing Mining Ledger over ESI for 2.x vers
 
 - download package using `composer require warlof/eveseat-mining-ledger`
 - add package into project by appending `Warlof\Seat\MiningLedger\MiningLedgerProvider::class,` in `providers` array from `/config/app.php`
+- publish package files using `php artisan vendor:publish --force`
+- run migration scripts with `php artisan migrate`
 - append following attributes into `.env` file
 
 | Variable               | Description                                                                              |
@@ -44,6 +46,8 @@ An extension for Eve SeAT which is providing Mining Ledger over ESI for 2.x vers
 | WEML_SSO_BASE          | `https://login.eveonline.com/oauth` for live                                             |
 |                        | `https://sisi.testeveonline.com/oauth` for test                                          |
 | WEML_ESI_SERVER        | `tranquility` for live ~ `singularity` for test                                          |
+
+- finally, don't forget to restart supervisor by calling `sudo service supervisor restart`
 
 # About
 

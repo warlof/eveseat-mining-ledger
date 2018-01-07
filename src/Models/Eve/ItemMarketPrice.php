@@ -13,21 +13,21 @@ use Warlof\Seat\MiningLedger\Models\Sde\InvType;
 
 class ItemMarketPrice extends Model {
 
-	public $timestamps = false;
+    public $timestamps = false;
 
-	public $incrementing = false;
+    public $incrementing = false;
 
-	protected $table = 'warlof_mining_ledger_eve_prices';
+    protected $table = 'warlof_mining_ledger_eve_prices';
 
-	protected $primaryKey = 'type_id';
+    protected $primaryKey = 'type_id';
 
-	protected $fillable = [
-		'type_id', 'average_price', 'adjusted_price',
-	];
+    protected $fillable = [
+        'type_id', 'average_price', 'adjusted_price',
+    ];
 
-	public function type()
-	{
-		return $this->hasOne(InvType::class, 'itemID', 'type_id');
-	}
+    public function type()
+    {
+        return $this->hasOne(InvType::class, 'itemID', 'type_id');
+    }
 
 }

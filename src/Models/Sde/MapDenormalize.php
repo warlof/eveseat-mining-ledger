@@ -12,12 +12,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class MapDenormalize extends Model {
 
-	public $timestamps = false;
+    public $timestamps = false;
 
-	public $incrementing = false;
+    public $incrementing = false;
 
-	protected $table = 'mapDenormalize';
+    protected $table = 'mapDenormalize';
 
-	protected $primaryKey = 'itemID';
+    protected $primaryKey = 'itemID';
 
 }

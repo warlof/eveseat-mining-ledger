@@ -18,93 +18,93 @@ use Warlof\Seat\MiningLedger\Jobs\Workers\CharacterMiningLedgerUpdate;
 class UpdateEsiAuthenticated extends Base {
 
 
-	/**
-	 * Force defining the handle method for the Job worker to call.
-	 *
-	 * @return mixed
-	 */
-	public function handle() {
+    /**
+     * Force defining the handle method for the Job worker to call.
+     *
+     * @return mixed
+     */
+    public function handle() {
 
-		if (!$this->trackOrDismiss())
-			return;
+        if (!$this->trackOrDismiss())
+            return;
 
-		$this->updateJobStatus(['status' => 'Working']);
+        $this->updateJobStatus(['status' => 'Working']);
 
-		$workers = collect([
-			CharacterMiningLedgerUpdate::class,
-		]);
+        $workers = collect([
+            CharacterMiningLedgerUpdate::class,
+        ]);
 
-		$this->writeInfoJobLog('Started ESI Updates with ' . $workers->count() . ' workers.');
+        $this->writeInfoJobLog('Started ESI Updates with ' . $workers->count() . ' workers.');
 
-		$job_start = microtime(true);
+        $job_start = microtime(true);
 
-		foreach ($workers as $worker) {
+        foreach ($workers as $worker) {
 
-			try {
+            try {
 
-				$this->updateJobStatus([
-					'Processing: ' . class_basename($worker),
-				]);
+                $this->updateJobStatus([
+                    'Processing: ' . class_basename($worker),
+                ]);
 
-				$this->writeInfoJobLog('Started Worker: ' . class_basename($worker));
+                $this->writeInfoJobLog('Started Worker: ' . class_basename($worker));
 
-				$worker_start = microtime(true);
+                $worker_start = microtime(true);
 
-				(new $worker)->setAuthentication($this->job_payload->esi_access)
-				             ->setCharacterID($this->job_payload->owner_id)->call();
-				$this->decrementErrorCounters();
+                (new $worker)->setAuthentication($this->job_payload->esi_access)
+                             ->setCharacterID($this->job_payload->owner_id)->call();
+                $this->decrementErrorCounters();
 
-				$this->writeInfoJobLog(class_basename($worker) .
-					' took ' . number_format(microtime(true) - $worker_start, 2) . 's to complete');
+                $this->writeInfoJobLog(class_basename($worker) .
+                    ' took ' . number_format(microtime(true) - $worker_start, 2) . 's to complete');
 
-			} catch (InvalidContainerDataException $e) {
+            } catch (InvalidContainerDataException $e) {
 
-				$this->writeErrorJobLog('An InvalidContainerDataException occured while processing ' .
-					class_basename($worker) . '. This normally means that an ESI token record in the database is corrupted.');
+                $this->writeErrorJobLog('An InvalidContainerDataException occured while processing ' .
+                    class_basename($worker) . '. This normally means that an ESI token record in the database is corrupted.');
 
-				$this->reportJobError($e);
+                $this->reportJobError($e);
 
-				return;
+                return;
 
-			} catch (EsiScopeAccessDeniedException $e) {
+            } catch (EsiScopeAccessDeniedException $e) {
 
-				$this->writeErrorJobLog('An EsiScopeAccessDeniedException occurred while processing ' .
-					class_basename($worker) . '. This normally means the key does not have access.');
+                $this->writeErrorJobLog('An EsiScopeAccessDeniedException occurred while processing ' .
+                    class_basename($worker) . '. This normally means the key does not have access.');
 
-				$this->reportJobError($e);
+                $this->reportJobError($e);
 
-				return;
+                return;
 
-			} catch (RequestFailedException $e) {
+            } catch (RequestFailedException $e) {
 
-				$this->writeErrorJobLog('A RequestFailedException occured while processing ' .
-					class_basename($worker) . '. This normally means the request is wrong.');
+                $this->writeErrorJobLog('A RequestFailedException occured while processing ' .
+                    class_basename($worker) . '. This normally means the request is wrong.');
 
-				$this->reportJobError($e);
+                $this->reportJobError($e);
 
-				return;
+                return;
 
-			} catch (Exception $e) {
+            } catch (Exception $e) {
 
-				$this->writeErrorJobLog('An Exception occurred while processing ' .
-				                        class_basename($worker) . '. Something terrible append !');
+                $this->writeErrorJobLog('An Exception occurred while processing ' .
+                                        class_basename($worker) . '. Something terrible append !');
 
-				$this->reportJobError($e);
+                $this->reportJobError($e);
 
-				return;
+                return;
 
-			}
+            }
 
-		}
+        }
 
-		$this->writeInfoJobLog('The full update run took ' .
+        $this->writeInfoJobLog('The full update run took ' .
            number_format(microtime(true) - $job_start, 2) . 's to complete');
 
-		$this->updateJobStatus([
-			'status' => 'Done',
-			'output' => null,
-		]);
+        $this->updateJobStatus([
+            'status' => 'Done',
+            'output' => null,
+        ]);
 
-		return;
-	}
+        return;
+    }
 }

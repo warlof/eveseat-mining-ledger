@@ -16,36 +16,36 @@ use Warlof\Seat\MiningLedger\Models\Character\MiningJournal;
 class CharacterMiningLedgerUpdate extends EsiBase {
 
 
-	/**
-	 * The contract for the update call. All
-	 * update should at least have this function.
-	 *
-	 * @throws InvalidContainerDataException
-	 * @throws EsiScopeAccessDeniedException
-	 * @throws RequestFailedException
-	 * @return mixed
-	 */
-	public function call() {
+    /**
+     * The contract for the update call. All
+     * update should at least have this function.
+     *
+     * @throws InvalidContainerDataException
+     * @throws EsiScopeAccessDeniedException
+     * @throws RequestFailedException
+     * @return mixed
+     */
+    public function call() {
 
-		$this->writeJobLog('mining', 'Processing characterID: ' . $this->characterID);
+        $this->writeJobLog('mining', 'Processing characterID: ' . $this->characterID);
 
-		$result = $this->esi_instance->setVersion( 'v1' )->invoke( 'get', '/characters/{character_id}/mining/', [
-			'character_id' => $this->getCharacterID(),
-		]);
+        $result = $this->esi_instance->setVersion( 'v1' )->invoke( 'get', '/characters/{character_id}/mining/', [
+            'character_id' => $this->getCharacterID(),
+        ]);
 
-		foreach ($result as $entry) {
-			MiningJournal::updateOrCreate([
-				'character_id' => $this->getCharacterID(),
-				'date' => $entry->date,
-				'solar_system_id' => $entry->solar_system_id,
-				'type_id' => $entry->type_id,
-			], [
-				'quantity' => $entry->quantity,
-			]);
-		}
+        foreach ($result as $entry) {
+            MiningJournal::updateOrCreate([
+                'character_id' => $this->getCharacterID(),
+                'date' => $entry->date,
+                'solar_system_id' => $entry->solar_system_id,
+                'type_id' => $entry->type_id,
+            ], [
+                'quantity' => $entry->quantity,
+            ]);
+        }
 
-		$this->updateEsiToken();
+        $this->updateEsiToken();
 
-		return;
-	}
+        return;
+    }
 }

@@ -12,9 +12,9 @@ use Warlof\Seat\MiningLedger\Models\Api\EsiTokens;
 
 class MemberTracking extends \Seat\Eveapi\Models\Corporation\MemberTracking {
 
-	public function token()
-	{
-		return $this->hasOne(EsiTokens::class, 'character_id', 'characterID');
-	}
+    public function token()
+    {
+        return $this->hasOne(EsiTokens::class, 'character_id', 'characterID');
+    }
 
 }

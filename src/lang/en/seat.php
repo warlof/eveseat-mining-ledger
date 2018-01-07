@@ -6,10 +6,10 @@
  */
 
 return [
-	'mining' => 'Mining',
-	'ledger' => 'Ledger|Ledgers',
-	'available_ledger' => 'Available Ledger|Available Ledgers',
-	'tracking' => 'Tracking',
-	'ore' => 'Ore',
-	'expires_at' => 'Token Expires in',
+    'mining' => 'Mining',
+    'ledger' => 'Ledger|Ledgers',
+    'available_ledger' => 'Available Ledger|Available Ledgers',
+    'tracking' => 'Tracking',
+    'ore' => 'Ore',
+    'expires_at' => 'Token Expires in',
 ];

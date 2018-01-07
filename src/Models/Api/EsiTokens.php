@@ -12,16 +12,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class EsiTokens extends Model {
 
-	public $timestamps = true;
+    public $timestamps = true;
 
-	public $incrementing = false;
+    public $incrementing = false;
 
-	protected $table = 'warlof_mining_ledger_esi_tokens';
+    protected $table = 'warlof_mining_ledger_esi_tokens';
 
-	protected $primaryKey = 'character_id';
+    protected $primaryKey = 'character_id';
 
-	protected $fillable = [
-		'character_id', 'scopes', 'access_token', 'refresh_token', 'expires_at', 'active'
-	];
+    protected $fillable = [
+        'character_id', 'scopes', 'access_token', 'refresh_token', 'expires_at', 'active'
+    ];
 
 }

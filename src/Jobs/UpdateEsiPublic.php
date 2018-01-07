@@ -17,82 +17,82 @@ use Warlof\Seat\MiningLedger\Jobs\Workers\MarketPricesUpdate;
 class UpdateEsiPublic extends Base {
 
 
-	/**
-	 * Force defining the handle method for the Job worker to call.
-	 *
-	 * @return mixed
-	 */
-	public function handle() {
+    /**
+     * Force defining the handle method for the Job worker to call.
+     *
+     * @return mixed
+     */
+    public function handle() {
 
-		if (!$this->trackOrDismiss())
-			return;
+        if (!$this->trackOrDismiss())
+            return;
 
-		$this->updateJobStatus(['status' => 'Working']);
+        $this->updateJobStatus(['status' => 'Working']);
 
-		$workers = collect([
-			MarketPricesUpdate::class,
-		]);
+        $workers = collect([
+            MarketPricesUpdate::class,
+        ]);
 
-		$this->writeInfoJobLog('Started ESI Updates with ' . $workers->count() . ' workers.');
+        $this->writeInfoJobLog('Started ESI Updates with ' . $workers->count() . ' workers.');
 
-		$job_start = microtime(true);
+        $job_start = microtime(true);
 
-		foreach ($workers as $worker) {
+        foreach ($workers as $worker) {
 
-			try {
+            try {
 
-				$this->updateJobStatus([
-					'Processing: ' . class_basename($worker),
-				]);
+                $this->updateJobStatus([
+                    'Processing: ' . class_basename($worker),
+                ]);
 
-				$this->writeInfoJobLog('Started Worker: ' . class_basename($worker));
+                $this->writeInfoJobLog('Started Worker: ' . class_basename($worker));
 
-				$worker_start = microtime(true);
+                $worker_start = microtime(true);
 
-				(new $worker)->call();
-				$this->decrementErrorCounters();
+                (new $worker)->call();
+                $this->decrementErrorCounters();
 
-				$this->writeInfoJobLog(class_basename($worker) .
-					' took ' . number_format(microtime(true) - $worker_start, 2) . 's to complete');
+                $this->writeInfoJobLog(class_basename($worker) .
+                    ' took ' . number_format(microtime(true) - $worker_start, 2) . 's to complete');
 
-			} catch (EsiScopeAccessDeniedException $e) {
+            } catch (EsiScopeAccessDeniedException $e) {
 
-				$this->writeErrorJobLog('An EsiScopeAccessDeniedException occurred while processing ' .
-					class_basename($worker) . '. This normally means the key does not have access.');
+                $this->writeErrorJobLog('An EsiScopeAccessDeniedException occurred while processing ' .
+                    class_basename($worker) . '. This normally means the key does not have access.');
 
-				$this->reportJobError($e);
+                $this->reportJobError($e);
 
-				return;
+                return;
 
-			} catch (RequestFailedException $e) {
+            } catch (RequestFailedException $e) {
 
-				$this->writeErrorJobLog('A RequestFailedException occurred while processing ' .
-				                        class_basename($worker) . '. This normally means the request is wrong.');
+                $this->writeErrorJobLog('A RequestFailedException occurred while processing ' .
+                                        class_basename($worker) . '. This normally means the request is wrong.');
 
-				$this->reportJobError($e);
+                $this->reportJobError($e);
 
-				return;
+                return;
 
-			} catch (Exception $e) {
+            } catch (Exception $e) {
 
-				$this->writeErrorJobLog('An Exception occurred while processing ' .
-					class_basename($worker) . '. Something terrible append !');
+                $this->writeErrorJobLog('An Exception occurred while processing ' .
+                    class_basename($worker) . '. Something terrible append !');
 
-				$this->reportJobError($e);
+                $this->reportJobError($e);
 
-				return;
-			}
+                return;
+            }
 
-		}
+        }
 
-		$this->writeInfoJobLog('The full update run took ' .
+        $this->writeInfoJobLog('The full update run took ' .
            number_format(microtime(true) - $job_start, 2) . 's to complete');
 
-		$this->updateJobStatus([
-			'status' => 'Done',
-			'output' => null,
-		]);
+        $this->updateJobStatus([
+            'status' => 'Done',
+            'output' => null,
+        ]);
 
-		return;
-	}
+        return;
+    }
 }

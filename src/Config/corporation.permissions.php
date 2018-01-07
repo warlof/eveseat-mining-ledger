@@ -1,5 +1,5 @@
 <?php
 
 return [
-	'warlof_mining',
+    'warlof_mining',
 ];

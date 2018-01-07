@@ -13,9 +13,9 @@ use Seat\Eseye\Fetchers\GuzzleFetcher;
 
 class EsiGuzzleFetcher extends GuzzleFetcher {
 
-	public function __construct( EsiAuthentication $authentication = null ) {
-		parent::__construct( $authentication );
-		$this->sso_base = env('WEML_SSO_BASE');
-	}
+    public function __construct( EsiAuthentication $authentication = null ) {
+        parent::__construct( $authentication );
+        $this->sso_base = env('WEML_SSO_BASE');
+    }
 
 }

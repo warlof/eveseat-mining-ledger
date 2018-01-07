@@ -43,25 +43,25 @@ class MiningJournal extends Model {
 		return $this->hasOne(MapDenormalize::class, 'itemID', 'solar_system_id');
 	}
 
-	/**
-	 * Fix composite key issue on insert/update elements.
-	 * Keep using core feature as much as possible, getKeyName is handle like an object and may or not returning array
-	 *
-	 * @param Builder $query
-	 *
-	 * @return Builder
-	 */
-	protected function setKeysForSaveQuery( Builder $query ) {
+    /**
+     * Fix composite key issue on insert/update elements.
+     * Keep using core feature as much as possible, getKeyName is handle like an object and may or not returning array
+     *
+     * @param Builder $query
+     *
+     * @return Builder
+     */
+    protected function setKeysForSaveQuery( Builder $query ) {
 
-		if (is_array($this->getKeyName())) {
+        if (is_array($this->getKeyName())) {
 
-			foreach ((array) $this->getKeyName() as $keyField) {
-				$query->where($keyField, '=', $this->original[$keyField]);
-			}
+            foreach ((array) $this->getKeyName() as $keyField) {
+                $query->where($keyField, '=', $this->original[$keyField]);
+            }
 
-			return $query;
-		}
+            return $query;
+        }
 
-		return parent::setKeysForSaveQuery( $query );
-	}
+        return parent::setKeysForSaveQuery( $query );
+    }
 }

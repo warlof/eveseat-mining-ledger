@@ -13,17 +13,17 @@ use Warlof\Seat\MiningLedger\Models\Eve\ItemMarketPrice;
 
 class InvType extends Model {
 
-	public $timestamps = false;
+    public $timestamps = false;
 
-	public $incrementing = false;
+    public $incrementing = false;
 
-	protected $table = 'invTypes';
+    protected $table = 'invTypes';
 
-	protected $primaryKey = 'typeID';
+    protected $primaryKey = 'typeID';
 
-	public function prices()
-	{
-		return $this->hasOne(ItemMarketPrice::class, 'type_id', 'typeID');
-	}
+    public function prices()
+    {
+        return $this->hasOne(ItemMarketPrice::class, 'type_id', 'typeID');
+    }
 
 }

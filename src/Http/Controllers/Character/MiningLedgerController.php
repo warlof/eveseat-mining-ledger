@@ -15,12 +15,12 @@ use Warlof\Seat\MiningLedger\Models\Character\MiningJournal;
 
 class MiningLedgerController extends Controller {
 
-	public function getLedger(int $character_id) : View
-	{
-		$token  = EsiTokens::find($character_id);
-		$ledger = MiningJournal::where('character_id', $character_id)->get();
+    public function getLedger(int $character_id) : View
+    {
+        $token  = EsiTokens::find($character_id);
+        $ledger = MiningJournal::where('character_id', $character_id)->get();
 
-		return view('mining-ledger::character.ledger', compact('ledger', 'token'));
-	}
+        return view('mining-ledger::character.ledger', compact('ledger', 'token'));
+    }
 
 }

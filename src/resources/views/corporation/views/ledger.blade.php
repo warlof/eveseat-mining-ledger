@@ -56,5 +56,6 @@
                 </tbody>
             </table>
         </div>
+        <div class="panel-footer">Total : {{ number_format($entries->sum('amounts'), 2) }}</div>
     </div>
 @stop

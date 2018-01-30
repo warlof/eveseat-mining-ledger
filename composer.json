@@ -3,7 +3,7 @@
   "description": "An extension for Eve SeAT which is providing Mining Ledger over ESI for 2.x version",
   "type": "seat-plugin",
   "minimum-stability": "stable",
-  "license": "GPL-3.0",
+  "license": "GPL-3.0-or-later",
   "authors": [
     {
       "name": "Warlof Tutsimo",

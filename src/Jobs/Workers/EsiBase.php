@@ -37,7 +37,7 @@ abstract class EsiBase extends Base {
     public function __construct() {
 
         $configuration = Configuration::getInstance();
-        $configuration->http_user_agent = 'eveseat-mining-ledger/2.0.0 (Clan Daerie;Warlof Tutsimo;Daerie Inc.;Get Off My Lawn)';
+        $configuration->http_user_agent = 'eveseat-mining-ledger/' . config('mining_ledger.config.version') . ' (Clan Daerie;Warlof Tutsimo;Daerie Inc.;Get Off My Lawn)';
         $configuration->logger_level = Logger::DEBUG;
         $configuration->logfile_location = storage_path() . '/logs/eseye.log';
         $configuration->file_cache_location = storage_path() . '/app/eseye/';

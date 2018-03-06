@@ -47,7 +47,7 @@ Route::group([
         ]);
 
         Route::get('/view/mining-ledger/{corporation_id}/{year?}/{month?}', [
-            'as' => 'coporation.view.mining_ledger',
+            'as' => 'corporation.view.mining_ledger',
             'middleware' => 'corporationbouncer:warlof_mining',
             'uses' => 'MiningLedgerController@getLedger',
         ]);

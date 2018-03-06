@@ -8,6 +8,7 @@
 namespace Warlof\Seat\MiningLedger\Jobs\Workers;
 
 
+use Illuminate\Support\Facades\DB;
 use Seat\Eseye\Exceptions\EsiScopeAccessDeniedException;
 use Seat\Eseye\Exceptions\InvalidContainerDataException;
 use Seat\Eseye\Exceptions\RequestFailedException;
@@ -37,14 +38,30 @@ class CharacterMiningLedgerUpdate extends EsiBase {
             ]);
 
             foreach ($result as $entry) {
+
+                $row = MiningJournal::select(DB::raw('SUM(quantity) as quantity'))
+                                    ->where('character_id', $this->getCharacterID())
+                                    ->where('date', $entry->date)
+                                    ->where('solar_system_id', $entry->solar_system_id)
+                                    ->where('type_id', $entry->type_id)
+                                    ->first();
+
+                // if we were not able to retrieve any mining ledger for today related to the character
+                // we spawn a new record with current time
+                // in case we've retrieve a record, remove
+
+                // spawn a new record with current UTC time
+                // assign as quantity delta between aggregated quantity from today and current quantity
                 MiningJournal::updateOrCreate([
-                    'character_id' => $this->getCharacterID(),
-                    'date' => $entry->date,
+                    'character_id'    => $this->getCharacterID(),
+                    'date'            => $entry->date,
+                    'time'            => carbon()->setTimezone('UTC')->toTimeString(),
                     'solar_system_id' => $entry->solar_system_id,
-                    'type_id' => $entry->type_id,
+                    'type_id'         => $entry->type_id,
                 ], [
-                    'quantity' => $entry->quantity,
+                    'quantity'        => $entry->quantity - (is_null($row) ? 0 : $row->quantity),
                 ]);
+
             }
 
             $this->updateEsiToken();

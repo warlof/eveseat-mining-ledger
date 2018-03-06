@@ -24,6 +24,9 @@ abstract class EsiBase extends Base {
      */
     protected $esi_instance = null;
 
+    /**
+     * @var null
+     */
     protected $characterID = null;
 
     /**

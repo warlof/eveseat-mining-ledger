@@ -20,18 +20,26 @@ class MiningJournal extends Model {
 
 	public $incrementing = false;
 
-	protected $primaryKey = ['character_id', 'date', 'solar_system_id', 'type_id'];
+	protected $primaryKey = ['character_id', 'date', 'time', 'solar_system_id', 'type_id'];
 
 	protected $table = 'warlof_mining_ledger_character_mining_journal';
 
 	protected $fillable = [
-		'character_id', 'date', 'solar_system_id', 'type_id', 'quantity',
+		'character_id', 'date', 'time', 'solar_system_id', 'type_id', 'quantity',
 	];
 
 	public function character()
 	{
 		return $this->belongsTo(CharacterSheet::class, 'character_id', 'characterID');
 	}
+
+	public function getVolumesAttribute()
+    {
+        if (is_null($this->type))
+            return 0.0;
+
+        return $this->quantity * $this->type->volume;
+    }
 
 	public function type()
 	{

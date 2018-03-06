@@ -14,7 +14,7 @@
                 @foreach ($chunk as $ledger)
                 <div class="col-xs-1">
                     <span class="text-bold">
-                        <a href="{{ route('coporation.view.mining_ledger', [
+                        <a href="{{ route('corporation.view.mining_ledger', [
                             request()->route()->parameter('corporation_id'),
                             date('Y', strtotime($ledger->year. '-01-01')),
                             date('m', strtotime($ledger->year . '-' . $ledger->month . '-01'))
@@ -44,13 +44,13 @@
                 <tbody>
                     @foreach($entries as $entry)
                     <tr>
-                        <td>
-                            {!! img('character', $entry->character_id, 32, ['class' => 'img-circle eve-icon small-icon']) !!}
-                            {{ $entry->name }}
+                        <td data-order="{{ $entry->name }}">
+                            {!! img('character', $entry->character_id, 32, ['class' => 'img-circle eve-icon small-icon'], false) !!}
+                            <a href="{{ route('character.view.sheet', ['character_id' => $entry->character_id]) }}">{{ $entry->name }}</a>
                         </td>
-                        <td class="text-right">{{ number_format($entry->quantities, 2) }}</td>
-                        <td class="text-right">{{ number_format($entry->volumes, 2) }} m3</td>
-                        <td class="text-right">{{ number_format($entry->amounts, 2) }} ISK</td>
+                        <td class="text-right" data-order="{{ $entry->quantities }}">{{ number_format($entry->quantities, 2) }}</td>
+                        <td class="text-right" data-order="{{ $entry->volumes }}">{{ number_format($entry->volumes, 2) }} m3</td>
+                        <td class="text-right" data-order="{{ $entry->amounts }}">{{ number_format($entry->amounts, 2) }} ISK</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -59,3 +59,16 @@
         <div class="panel-footer">Total : {{ number_format($entries->sum('amounts'), 2) }}</div>
     </div>
 @stop
+
+@push('javascript')
+<script type="text/javascript">
+    $(function(){
+        $('#corporation-mining-ledger').dataTable({
+            'order': [
+                [3, 'desc']
+            ],
+            'paging': false
+        });
+    });
+</script>
+@endpush

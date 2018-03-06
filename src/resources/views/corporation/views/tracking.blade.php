@@ -23,15 +23,15 @@
                 <tbody>
                 @foreach($members as $member)
                     <tr>
-                        <td>
-                            {!! img('character', $member->characterID, 32, ['class' => 'img-circle eve-icon small-icon']) !!}
+                        <td data-order="{{ $member->name }}">
+                            {!! img('character', $member->characterID, 32, ['class' => 'img-circle eve-icon small-icon'], false) !!}
                             <a href="{{ route('character.view.sheet', ['character_id' => $member->characterID]) }}">{{ $member->name }}</a>
                         </td>
-                        <td>
+                        <td data-order="{{ $member->startDateTime }}">
                             <span data-toggle="tooltip" data-placement="top" title="{{ $member->startDateTime }}">{{ human_diff($member->startDateTime) }}</span>
                         </td>
                         <td>{{ $member->location }}</td>
-                        <td>
+                        <td data-order="{{ $member->logonDateTime }}">
                             <span data-toggle="tooltip" title="" data-original-title="{{ $member->logonDateTime }}">
                                 {{ human_diff($member->logonDateTime) }}
                             </span>
@@ -43,13 +43,15 @@
                             </span>
                             @endif
                         </td>
-                        <td>
-                            @if(is_null($member->token))
-                                <i class="fa fa-warning text-danger"></i>
-                            @else
-                                <i class="fa fa-check text-success"></i>
-                            @endif
+                        @if(is_null($member->token))
+                        <td data-order="0">
+                            <i class="fa fa-warning text-danger"></i>
                         </td>
+                        @else
+                        <td data-order="1">
+                            <i class="fa fa-check text-success"></i>
+                        </td>
+                        @endif
                     </tr>
                 @endforeach
                 </tbody>
@@ -57,3 +59,17 @@
         </div>
     </div>
 @stop
+
+@push('javascript')
+    <script type="text/javascript">
+        $(function(){
+            $('#corporation-mining-ledger-tracking').dataTable({
+                'order': [
+                    [5, 'asc'],
+                    [0, 'asc']
+                ],
+                'paging': false
+            });
+        });
+    </script>
+@endpush

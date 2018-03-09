@@ -39,6 +39,7 @@ class CharacterMiningLedgerUpdate extends EsiBase {
 
             foreach ($result as $entry) {
 
+                // retrieve daily mined amount for current type, system and character
                 $row = MiningJournal::select(DB::raw('SUM(quantity) as quantity'))
                                     ->where('character_id', $this->getCharacterID())
                                     ->where('date', $entry->date)
@@ -46,20 +47,30 @@ class CharacterMiningLedgerUpdate extends EsiBase {
                                     ->where('type_id', $entry->type_id)
                                     ->first();
 
-                // if we were not able to retrieve any mining ledger for today related to the character
-                // we spawn a new record with current time
-                // in case we've retrieve a record, remove
+                // get the current UTC time for potential new mining ledger entry
+                $delta_time = carbon()->setTimezone('UTC')->toTimeString();
 
-                // spawn a new record with current UTC time
-                // assign as quantity delta between aggregated quantity from today and current quantity
+                // compute delta between daily knew mined amount and new daily mined amount
+                $delta_quantity = $entry->quantity - (is_null($row) ? 0 : $row->quantity);
+
+                // in case delta is 0, we skip the entry since there are no needs to store empty value
+                if ($delta_quantity == 0)
+                    continue;
+
+                // in case the entry date does not match with the current date, we reset entry time to midnight
+                // as a last entry
+                if ($entry->date != carbon()->setTimezone('UTC')->toDateString())
+                    $delta_time = '23:59:59';
+
+                // create a new ledger entry with computed information
                 MiningJournal::updateOrCreate([
                     'character_id'    => $this->getCharacterID(),
                     'date'            => $entry->date,
-                    'time'            => carbon()->setTimezone('UTC')->toTimeString(),
+                    'time'            => $delta_time,
                     'solar_system_id' => $entry->solar_system_id,
                     'type_id'         => $entry->type_id,
                 ], [
-                    'quantity'        => $entry->quantity - (is_null($row) ? 0 : $row->quantity),
+                    'quantity'        => $delta_quantity,
                 ]);
 
             }

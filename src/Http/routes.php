@@ -33,6 +33,12 @@ Route::group([
             'uses' => 'MiningLedgerController@getLedger',
         ]);
 
+        Route::get('/view/mining-ledger/{character_id}/{date}/{system_id}/{type_id}', [
+            'as' => 'character.view.detailed_mining_ledger',
+            'middleware' => 'characterbouncer:warlof_mining',
+            'uses' => 'MiningLedgerController@getDetailedLedger',
+        ]);
+
     });
 
     Route::group([

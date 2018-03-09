@@ -24,6 +24,10 @@ class MiningJournal extends Model {
 
 	protected $table = 'warlof_mining_ledger_character_mining_journal';
 
+	protected $appends = [
+	    'amount', 'volumes',
+    ];
+
 	protected $fillable = [
 		'character_id', 'date', 'time', 'solar_system_id', 'type_id', 'quantity',
 	];
@@ -32,6 +36,17 @@ class MiningJournal extends Model {
 	{
 		return $this->belongsTo(CharacterSheet::class, 'character_id', 'characterID');
 	}
+
+	public function getAmountAttribute()
+    {
+        if (is_null($this->type))
+            return 0.0;
+
+        if (is_null($this->type->prices))
+            return 0.0;
+
+        return $this->quantity * $this->type->prices->average_price;
+    }
 
 	public function getVolumesAttribute()
     {
@@ -50,6 +65,18 @@ class MiningJournal extends Model {
 	{
 		return $this->hasOne(MapDenormalize::class, 'itemID', 'solar_system_id');
 	}
+
+	public function save(array $options = [])
+    {
+        if (is_null($this->getAttributeValue('date')))
+            $this->setAttribute('date', carbon()->toDateString());
+
+        // auto-seed magic indexes
+        $this->setAttribute('month', carbon($this->getAttributeValue('date'))->month);
+        $this->setAttribute('year', carbon($this->getAttributeValue('date'))->year);
+
+        return parent::save($options);
+    }
 
     /**
      * Fix composite key issue on insert/update elements.

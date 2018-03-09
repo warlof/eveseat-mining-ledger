@@ -32,16 +32,16 @@ class MiningLedgerController extends Controller {
                      ->get();
 
         $entries = DB::table('warlof_mining_ledger_character_mining_journal')
-            ->select('character_id', 'name', DB::raw('year(date) as year'), DB::raw('month(date) as month'),
+            ->select('character_id', 'name', 'year', 'month',
                 DB::raw('sum(quantity) as quantities'), DB::raw('sum(quantity * volume) as volumes'),
                 DB::raw('sum(quantity * average_price) as amounts'))
             ->join('warlof_mining_ledger_eve_prices', 'warlof_mining_ledger_eve_prices.type_id', 'warlof_mining_ledger_character_mining_journal.type_id')
             ->join('invTypes', 'typeID', 'warlof_mining_ledger_character_mining_journal.type_id')
             ->join('corporation_member_trackings', 'characterID', 'character_id')
             ->where('corporationID', $corporation_id)
+            ->where('year', '=', $year)
+            ->where('month', '=', $month)
             ->groupBy('character_id', 'name', 'year', 'month')
-            ->having('year', '=', $year)
-            ->having('month', '=', $month)
             ->get();
 
         return view('mining-ledger::corporation.views.ledger', compact('ledgers', 'entries'));

@@ -79,3 +79,10 @@ As CEO or officer, you'll be able to see mined amount on corporation sheet where
 The first sub view `Ledger` will show you a list of average mined quantity, volume and amount foreach character per year and month.
 
 The second sub view called `Tracking` will show you the list of all character and display the status if or not the character is coupled to ESI.
+
+ # Screens
+ 
+ ![Character Minig Ledger](https://i.imgur.com/sOrM4G6.png)
+ ![Detailed Mining Ledger](https://i.imgur.com/DPEm5cb.png)
+ ![Corporation Members Mining Ledger](https://i.imgur.com/g60mcBM.png)
+ ![Corporation Tracking Members](https://i.imgur.com/2UUQQ6j.png)

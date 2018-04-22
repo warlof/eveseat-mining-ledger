@@ -79,14 +79,18 @@ class CharacterMiningLedgerUpdate extends EsiBase {
 
         } catch (RequestFailedException $e) {
 
+            // ESI seems to be indispose - skip error tracking
+            if ($e->getEsiResponse()->getErrorCode() == 502)
+                return;
+
             logger()->error(print_r($e->getEsiResponse(), true));
 
             // in case the character does not exists, drop the token from the system
             // and end the job
-            if ($e->getEsiResponse()->getErrorCode() == 404) {
-                EsiTokens::find($this->getCharacterID())->delete();
-                return;
-            }
+            // if ($e->getEsiResponse()->getErrorCode() == 404) {
+            //     EsiTokens::find($this->getCharacterID())->delete();
+            //     return;
+            // }
 
             // in case the refresh token has been reset, drop it from the system
             // and end the job
